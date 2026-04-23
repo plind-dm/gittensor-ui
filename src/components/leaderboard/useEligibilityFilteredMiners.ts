@@ -2,18 +2,23 @@ import { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { type MinerStats } from './types';
 
+const ELIGIBLE_PARAM = 'eligible';
+
 // Matches the `?eligible=true|false` param written by TopMinersTable so any
 // sidebar surface stays in sync with the main table's eligibility filter.
-export const useEligibilityFilteredMiners = (
+export function useEligibilityFilteredMiners(
   miners: MinerStats[],
-): MinerStats[] => {
+): MinerStats[] {
   const [searchParams] = useSearchParams();
-  const eligibilityFilter = searchParams.get('eligible');
+  const eligibleParam = searchParams.get(ELIGIBLE_PARAM);
+
   return useMemo(() => {
-    if (eligibilityFilter !== 'true' && eligibilityFilter !== 'false') {
-      return miners;
+    if (eligibleParam === 'true') {
+      return miners.filter((m) => m.isEligible);
     }
-    const wantEligible = eligibilityFilter === 'true';
-    return miners.filter((m) => !!m.isEligible === wantEligible);
-  }, [miners, eligibilityFilter]);
-};
+    if (eligibleParam === 'false') {
+      return miners.filter((m) => !m.isEligible);
+    }
+    return miners;
+  }, [miners, eligibleParam]);
+}

@@ -24,6 +24,7 @@ export const ActivitySidebarCards: React.FC<ActivitySidebarCardsProps> = ({
   const miners = useEligibilityFilteredMiners(minersProp);
 
   const overviewSource = filterOverview ? miners : minersProp;
+
   const minerActivityStats = useMemo(() => {
     const all = overviewSource.length;
     const eligiblePr = overviewSource.filter((m) => m.ossIsEligible).length;
@@ -59,8 +60,8 @@ export const ActivitySidebarCards: React.FC<ActivitySidebarCardsProps> = ({
     const merged = miners.reduce((acc, m) => acc + (m.totalMergedPrs || 0), 0);
     const open = miners.reduce((acc, m) => acc + (m.totalOpenPrs || 0), 0);
     const closed = miners.reduce((acc, m) => acc + (m.totalClosedPrs || 0), 0);
-    const total = merged + open + closed;
-    const mergeRate = total > 0 ? Math.round((merged / total) * 100) : 0;
+    const resolved = merged + closed;
+    const mergeRate = resolved > 0 ? Math.round((merged / resolved) * 100) : 0;
     return { merged, open, closed, mergeRate };
   }, [miners]);
 
@@ -74,8 +75,8 @@ export const ActivitySidebarCards: React.FC<ActivitySidebarCardsProps> = ({
       (acc, m) => acc + (m.totalClosedIssues || 0),
       0,
     );
-    const total = solved + open + closed;
-    const solveRate = total > 0 ? Math.round((solved / total) * 100) : 0;
+    const resolved = solved + closed;
+    const solveRate = resolved > 0 ? Math.round((solved / resolved) * 100) : 0;
     return { solved, open, closed, solveRate };
   }, [miners]);
 

@@ -2,12 +2,12 @@ import React, { useMemo, useState } from 'react';
 import { Box, Stack, Typography, Avatar } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import { SectionCard } from './SectionCard';
-import { useEligibilityFilteredMiners } from './useEligibilityFilteredMiners';
 import { STATUS_COLORS, scrollbarSx } from '../../theme';
 import { getGithubAvatarSrc } from '../../utils/ExplorerUtils';
 import { LinkBox } from '../common/linkBehavior';
 import { type MinerStats, FONTS } from './types';
 import { ActivitySidebarCards } from './ActivitySidebarCards';
+import { useEligibilityFilteredMiners } from './useEligibilityFilteredMiners';
 
 // Re-export MinerStats for backward compatibility
 export type { MinerStats } from './types';
