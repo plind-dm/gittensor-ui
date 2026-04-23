@@ -309,7 +309,7 @@ const WatchlistPage: React.FC = () => {
               gap: 2,
             }}
           >
-            <ActivitySidebarCards miners={minerStats} />
+            <ActivitySidebarCards miners={minerStats} filterOverview />
           </Box>
         )}
       </Box>

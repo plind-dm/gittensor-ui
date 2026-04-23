@@ -9,21 +9,25 @@ import { useEligibilityFilteredMiners } from './useEligibilityFilteredMiners';
 
 interface ActivitySidebarCardsProps {
   miners: MinerStats[];
+  // When true (e.g. Watchlist), the Miners Activity overview card also respects
+  // the eligibility filter. On /contributions and /discoveries it stays a full
+  // All/Eligible/Ineligible breakdown regardless of the active filter.
+  filterOverview?: boolean;
 }
 
 export const ActivitySidebarCards: React.FC<ActivitySidebarCardsProps> = ({
   miners: minersProp,
+  filterOverview = false,
 }) => {
   // Respect the main table's eligibility filter so activity cards match what
-  // the user sees in the leaderboard. The Miners Activity overview card below
-  // is intentionally computed from the unfiltered prop since it shows the full
-  // All/Eligible/Ineligible breakdown regardless of the active filter.
+  // the user sees in the leaderboard.
   const miners = useEligibilityFilteredMiners(minersProp);
 
+  const overviewSource = filterOverview ? miners : minersProp;
   const minerActivityStats = useMemo(() => {
-    const all = minersProp.length;
-    const eligiblePr = minersProp.filter((m) => m.ossIsEligible).length;
-    const eligibleIssue = minersProp.filter(
+    const all = overviewSource.length;
+    const eligiblePr = overviewSource.filter((m) => m.ossIsEligible).length;
+    const eligibleIssue = overviewSource.filter(
       (m) => m.discoveriesIsEligible,
     ).length;
     return {
@@ -33,7 +37,7 @@ export const ActivitySidebarCards: React.FC<ActivitySidebarCardsProps> = ({
       eligibleIssue,
       ineligibleIssue: Math.max(0, all - eligibleIssue),
     };
-  }, [minersProp]);
+  }, [overviewSource]);
 
   const ossUsdPerDay = useMemo(
     () =>
