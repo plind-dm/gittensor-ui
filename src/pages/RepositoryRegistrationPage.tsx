@@ -13,6 +13,7 @@ import { alpha } from '@mui/material/styles';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { isRepoTracked } from '../api';
+import BackButton from '../components/BackButton';
 import { useLinkBehavior } from '../components/common/linkBehavior';
 import { Page } from '../components/layout';
 import { SEO } from '../components';
@@ -297,6 +298,7 @@ const RepositoryRegistrationPage: React.FC = () => {
           px: { xs: 2, md: 0 },
         }}
       >
+        <BackButton to="/repositories" label="Back" />
         <Stack spacing={1.5} sx={{ mb: 4 }}>
           <Typography
             sx={(theme) => ({
